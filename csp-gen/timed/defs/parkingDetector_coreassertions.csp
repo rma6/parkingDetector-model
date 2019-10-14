@@ -4,22 +4,26 @@ P_T_parkingDetector = let
 			parkingDetector_Pactive = 0
 			parkingDetector_idle_time = 0
 			parkingDetector_watch_time = 0
-		within T_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			parkingDetector_Pidle = 0
+		within T_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 P_parkingDetector = let 
 			parkingDetector_Pactive = 0
 			parkingDetector_idle_time = 0
 			parkingDetector_watch_time = 0
-		within parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			parkingDetector_Pidle = 0
+		within parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 P_T_parkingDetector_VS = let 
 			parkingDetector_Pactive = 0
 			parkingDetector_idle_time = 0
 			parkingDetector_watch_time = 0
-		within T_parkingDetector_VS(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			parkingDetector_Pidle = 0
+		within T_parkingDetector_VS(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 P_parkingDetector_VS = let 
 			parkingDetector_Pactive = 0
 			parkingDetector_idle_time = 0
 			parkingDetector_watch_time = 0
-		within parkingDetector_VS(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			parkingDetector_Pidle = 0
+		within parkingDetector_VS(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 
 assert P_T_parkingDetector :[deterministic]
 assert P_T_parkingDetector :[divergence-free]
@@ -59,17 +63,19 @@ T_MemoryN_parkingDetector = let
 			parkingDetector_Pactive = 0
 			parkingDetector_idle_time = 0
 			parkingDetector_watch_time = 0
-		within timed::MemoryN_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			parkingDetector_Pidle = 0
+		within timed::MemoryN_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 T_MemoryO_parkingDetector = let 
 			parkingDetector_Pactive = 0
 			parkingDetector_idle_time = 0
 			parkingDetector_watch_time = 0
-		within timed::MemoryO_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			parkingDetector_Pidle = 0
+		within timed::MemoryO_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 
 assert T_MemoryN_parkingDetector [FD= T_MemoryO_parkingDetector
 assert T_MemoryO_parkingDetector [FD= T_MemoryN_parkingDetector
 
 -- clocks used after reset
-parkingDetector_clock_C_trans = {|parkingDetector_internal__."parkingDetector_t7",parkingDetector_internal__."parkingDetector_t12",parkingDetector_internal__."parkingDetector_t16",parkingDetector_internal__."parkingDetector_t17"|}
+parkingDetector_clock_C_trans = {|parkingDetector_internal__."parkingDetector_t7",parkingDetector_internal__."parkingDetector_t12",parkingDetector_internal__."parkingDetector_t1",parkingDetector_internal__."parkingDetector_t17"|}
 parkingDetector_clock_C = CHAOS(diff(Events,parkingDetector_clock_C_trans)) [| {| timed::parkingDetector_clockReset."C" |} |> CHAOS(Events) 
-assert parkingDetector_clock_C [T= timed::parkingDetector_internal_(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+assert parkingDetector_clock_C [T= timed::parkingDetector_internal_(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)

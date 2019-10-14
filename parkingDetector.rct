@@ -110,23 +110,45 @@ stm parkingDetector {
 		trigger movement_out
 		action increaseSlot ( ) ; # C
 	}
-	transition t16 {
+	transition t1 {
 		from left_idle
-		to right_idle
+		to p3
 		trigger
 		condition since ( C ) >= watch_time
-		action rotate ( ) ; update ( ) ; # C
+	}
+	transition t10 {
+		from p3
+		to left_idle
+		probability Pidle
+		action # C
+	}
+	transition t16 {
+		from p3
+		to init
+		probability 1 - Pidle
 	}
 	transition t17 {
 		from right_idle
-		to left_idle
+		to p4
 		trigger
 		condition since ( C ) >= watch_time
-		action rotate ( ) ; update ( ) ; # C
 	}
+	transition t18 {
+		from p4
+		to init
+		probability 1 - Pidle
+	}
+	clock C
 	const idle_time : int
 	const watch_time : int
-
-	clock C
+	probabilistic p3
+	const Pidle : int
+	probabilistic p4
+	transition t19 {
+		from p4
+		to right_idle
+		probability Pidle
+		action # C
+	}
 }
 

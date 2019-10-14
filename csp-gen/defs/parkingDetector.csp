@@ -47,8 +47,12 @@ parkingDetector_TIDS = {
 	"parkingDetector_t13",
 	"parkingDetector_t14",
 	"parkingDetector_t15",
+	"parkingDetector_t1",
+	"parkingDetector_t10",
 	"parkingDetector_t16",
-	"parkingDetector_t17"
+	"parkingDetector_t17",
+	"parkingDetector_t18",
+	"parkingDetector_t19"
 }
 
 -- declaring state machine events
@@ -79,69 +83,79 @@ CS_parkingDetector_left_idle_sync = {|
 
 parkingDetector_left_idle_triggers = {|
 	parkingDetector_internal__."parkingDetector_t9",
+	parkingDetector_internal__."parkingDetector_t4",
+	parkingDetector_internal__."parkingDetector_t16",
 	parkingDetector_internal__."parkingDetector_t12",
+	parkingDetector_internal__."parkingDetector_t5",
+	parkingDetector_internal__."parkingDetector_t19",
+	parkingDetector_movement_out__."parkingDetector_t15",
+	parkingDetector_internal__."parkingDetector_t10",
+	parkingDetector_internal__."parkingDetector_t13",
 	parkingDetector_internal__."parkingDetector_t14",
+	parkingDetector_internal__."parkingDetector_t1",
+	parkingDetector_internal__."parkingDetector_t8",
 	parkingDetector_movement_out__."parkingDetector_t11",
-	parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_internal__."parkingDetector_t7",
 	parkingDetector_movement_in__."parkingDetector_t2",
 	parkingDetector_internal__."parkingDetector_t6",
 	parkingDetector_movement_in__."parkingDetector_t3",
-	parkingDetector_internal__."parkingDetector_t7",
-	parkingDetector_internal__."parkingDetector_t13",
-	parkingDetector_internal__."parkingDetector_t16",
-	parkingDetector_movement_out__."parkingDetector_t15",
-	parkingDetector_internal__."parkingDetector_t4",
-	parkingDetector_internal__."parkingDetector_t5",
-	parkingDetector_internal__."parkingDetector_t8"
+	parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_internal__."parkingDetector_t18"
 |}
-S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = let
-	T_parkingDetector_t2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_movement_in__!"parkingDetector_t2".in ->  (parkingDetector_exit!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
+S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = let
+	T_parkingDetector_t2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_movement_in__!"parkingDetector_t2".in ->  (parkingDetector_exit!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
 						( true&(decreaseSlotCall -> (SKIP |~| STOP); decreaseSlotRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_left_idle"!"parkingDetector_left_active" -> parkingDetector_entered!"parkingDetector_left_idle"!"parkingDetector_left_active" ->
-						S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	)
-	T_parkingDetector_t11(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_movement_out__!"parkingDetector_t11".in ->  (parkingDetector_exit!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
+	T_parkingDetector_t11(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_movement_out__!"parkingDetector_t11".in ->  (parkingDetector_exit!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
 						( true&(increaseSlotCall -> (SKIP |~| STOP); increaseSlotRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_left_idle"!"parkingDetector_left_active" -> parkingDetector_entered!"parkingDetector_left_idle"!"parkingDetector_left_active" ->
-						S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	)
-	T_parkingDetector_t16(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_internal__!"parkingDetector_t16" ->  parkingDetector_exit!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
+	T_parkingDetector_t1(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_internal__!"parkingDetector_t1" ->  parkingDetector_exit!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> SKIP;
-						( true&(rotateCall -> (SKIP |~| STOP); rotateRet -> SKIP));( true&(updateCall -> (SKIP |~| STOP); updateRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_left_idle"!"parkingDetector_right_idle" -> parkingDetector_entered!"parkingDetector_left_idle"!"parkingDetector_right_idle" ->
-						S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						J_parkingDetector_p3(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	
+	J_parkingDetector_p3(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (
+				(parkingDetector_internal__!"parkingDetector_t10" -> SKIP;parkingDetector_enter!"parkingDetector_left_idle"!"parkingDetector_left_idle" -> S_parkingDetector_left_idle_execute(id__,"parkingDetector_left_idle",parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)
+				)|~|
+				(parkingDetector_internal__!"parkingDetector_t16" -> parkingDetector_enter!"parkingDetector_left_idle"!"parkingDetector_init" -> parkingDetector_entered!"parkingDetector_left_idle"!"parkingDetector_init" ->
+				S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+				)
+				)
 	
 	
 
-	S_parkingDetector_left_idle_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time) = 
+	S_parkingDetector_left_idle_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle) = 
 	SKIP; 
 	parkingDetector_entered!o__!"parkingDetector_left_idle" ->
 	   (SKIP
 	   														; STOP /\ (
-	   															    T_parkingDetector_t2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)[]
-	   															    T_parkingDetector_t11(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)[]
-	   															    T_parkingDetector_t16(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															    T_parkingDetector_t2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)[]
+	   															    T_parkingDetector_t11(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)[]
+	   															    T_parkingDetector_t1(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    []
-	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t12","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t2","parkingDetector_t6","parkingDetector_t3","parkingDetector_t7","parkingDetector_t13","parkingDetector_t16","parkingDetector_t15","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"}) ->
+	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t2","parkingDetector_t6","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"}) ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_left_idle"})!"parkingDetector_left_idle" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_left_idle" -> SKIP);
-	   															      	S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t12","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t2","parkingDetector_t6","parkingDetector_t3","parkingDetector_t7","parkingDetector_t13","parkingDetector_t16","parkingDetector_t15","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t2","parkingDetector_t6","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_left_idle"})!"parkingDetector_left_idle" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_left_idle" -> SKIP);
-	   															      	S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t12","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t2","parkingDetector_t6","parkingDetector_t3","parkingDetector_t7","parkingDetector_t13","parkingDetector_t16","parkingDetector_t15","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t2","parkingDetector_t6","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_left_idle"})!"parkingDetector_left_idle" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_left_idle" -> SKIP);
-	   															      	S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															      	S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    )
 	   														)
 within
 parkingDetector_enter?x__:diff(parkingDetector_SIDS,{"parkingDetector_left_idle"})!"parkingDetector_left_idle" -> ( 
-	S_parkingDetector_left_idle_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time)) 
+	S_parkingDetector_left_idle_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)) 
 CS_parkingDetector_right_idle_sync = {|
 	parkingDetector_enter.y.x, 
 	parkingDetector_entered.y.x, 
@@ -158,70 +172,80 @@ CS_parkingDetector_right_idle_sync = {|
 
 
 parkingDetector_right_idle_triggers = {|
-	parkingDetector_internal__."parkingDetector_t12",
 	parkingDetector_internal__."parkingDetector_t9",
+	parkingDetector_internal__."parkingDetector_t4",
+	parkingDetector_internal__."parkingDetector_t16",
+	parkingDetector_internal__."parkingDetector_t12",
+	parkingDetector_internal__."parkingDetector_t5",
+	parkingDetector_internal__."parkingDetector_t19",
+	parkingDetector_movement_out__."parkingDetector_t15",
+	parkingDetector_internal__."parkingDetector_t10",
+	parkingDetector_internal__."parkingDetector_t13",
 	parkingDetector_internal__."parkingDetector_t14",
+	parkingDetector_internal__."parkingDetector_t1",
+	parkingDetector_internal__."parkingDetector_t8",
 	parkingDetector_movement_out__."parkingDetector_t11",
-	parkingDetector_internal__."parkingDetector_t17",
-	parkingDetector_movement_in__."parkingDetector_t3",
+	parkingDetector_internal__."parkingDetector_t7",
 	parkingDetector_internal__."parkingDetector_t6",
 	parkingDetector_movement_in__."parkingDetector_t2",
-	parkingDetector_internal__."parkingDetector_t13",
-	parkingDetector_internal__."parkingDetector_t7",
-	parkingDetector_movement_out__."parkingDetector_t15",
-	parkingDetector_internal__."parkingDetector_t16",
-	parkingDetector_internal__."parkingDetector_t4",
-	parkingDetector_internal__."parkingDetector_t5",
-	parkingDetector_internal__."parkingDetector_t8"
+	parkingDetector_movement_in__."parkingDetector_t3",
+	parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_internal__."parkingDetector_t18"
 |}
-S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = let
-	T_parkingDetector_t3(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_movement_in__!"parkingDetector_t3".in ->  (parkingDetector_exit!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
+S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = let
+	T_parkingDetector_t3(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_movement_in__!"parkingDetector_t3".in ->  (parkingDetector_exit!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
 						( true&(decreaseSlotCall -> (SKIP |~| STOP); decreaseSlotRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_right_idle"!"parkingDetector_right_active" -> parkingDetector_entered!"parkingDetector_right_idle"!"parkingDetector_right_active" ->
-						S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	)
-	T_parkingDetector_t15(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_movement_out__!"parkingDetector_t15".in ->  (parkingDetector_exit!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
+	T_parkingDetector_t15(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_movement_out__!"parkingDetector_t15".in ->  (parkingDetector_exit!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
 						( true&(increaseSlotCall -> (SKIP |~| STOP); increaseSlotRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_right_idle"!"parkingDetector_right_active" -> parkingDetector_entered!"parkingDetector_right_idle"!"parkingDetector_right_active" ->
-						S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	)
-	T_parkingDetector_t17(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_internal__!"parkingDetector_t17" ->  parkingDetector_exit!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
+	T_parkingDetector_t17(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_internal__!"parkingDetector_t17" ->  parkingDetector_exit!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> SKIP;
-						( true&(rotateCall -> (SKIP |~| STOP); rotateRet -> SKIP));( true&(updateCall -> (SKIP |~| STOP); updateRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_right_idle"!"parkingDetector_left_idle" -> parkingDetector_entered!"parkingDetector_right_idle"!"parkingDetector_left_idle" ->
-						S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						J_parkingDetector_p4(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	
+	J_parkingDetector_p4(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (
+				(parkingDetector_internal__!"parkingDetector_t18" -> parkingDetector_enter!"parkingDetector_right_idle"!"parkingDetector_init" -> parkingDetector_entered!"parkingDetector_right_idle"!"parkingDetector_init" ->
+				S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+				)|~|
+				(parkingDetector_internal__!"parkingDetector_t19" -> SKIP;parkingDetector_enter!"parkingDetector_right_idle"!"parkingDetector_right_idle" -> S_parkingDetector_right_idle_execute(id__,"parkingDetector_right_idle",parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)
+				)
+				)
 	
 	
 
-	S_parkingDetector_right_idle_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time) = 
+	S_parkingDetector_right_idle_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle) = 
 	SKIP; 
 	parkingDetector_entered!o__!"parkingDetector_right_idle" ->
 	   (SKIP
 	   														; STOP /\ (
-	   															    T_parkingDetector_t3(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)[]
-	   															    T_parkingDetector_t15(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)[]
-	   															    T_parkingDetector_t17(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															    T_parkingDetector_t3(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)[]
+	   															    T_parkingDetector_t15(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)[]
+	   															    T_parkingDetector_t17(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    []
-	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t3","parkingDetector_t6","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"}) ->
+	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"}) ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_right_idle"})!"parkingDetector_right_idle" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_right_idle" -> SKIP);
-	   															      	S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t3","parkingDetector_t6","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_right_idle"})!"parkingDetector_right_idle" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_right_idle" -> SKIP);
-	   															      	S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t3","parkingDetector_t6","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_right_idle"})!"parkingDetector_right_idle" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_right_idle" -> SKIP);
-	   															      	S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															      	S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    )
 	   														)
 within
 parkingDetector_enter?x__:diff(parkingDetector_SIDS,{"parkingDetector_right_idle"})!"parkingDetector_right_idle" -> ( 
-	S_parkingDetector_right_idle_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time)) 
+	S_parkingDetector_right_idle_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)) 
 CS_parkingDetector_left_active_sync = {|
 	parkingDetector_enter.y.x, 
 	parkingDetector_entered.y.x, 
@@ -239,64 +263,68 @@ CS_parkingDetector_left_active_sync = {|
 
 parkingDetector_left_active_triggers = {|
 	parkingDetector_internal__."parkingDetector_t9",
-	parkingDetector_internal__."parkingDetector_t12",
-	parkingDetector_internal__."parkingDetector_t14",
-	parkingDetector_movement_out__."parkingDetector_t11",
-	parkingDetector_internal__."parkingDetector_t17",
-	parkingDetector_internal__."parkingDetector_t6",
-	parkingDetector_movement_in__."parkingDetector_t3",
-	parkingDetector_movement_in__."parkingDetector_t2",
-	parkingDetector_internal__."parkingDetector_t7",
-	parkingDetector_internal__."parkingDetector_t13",
-	parkingDetector_movement_out__."parkingDetector_t15",
-	parkingDetector_internal__."parkingDetector_t16",
 	parkingDetector_internal__."parkingDetector_t4",
+	parkingDetector_internal__."parkingDetector_t16",
+	parkingDetector_internal__."parkingDetector_t12",
 	parkingDetector_internal__."parkingDetector_t5",
-	parkingDetector_internal__."parkingDetector_t8"
+	parkingDetector_internal__."parkingDetector_t19",
+	parkingDetector_movement_out__."parkingDetector_t15",
+	parkingDetector_internal__."parkingDetector_t10",
+	parkingDetector_internal__."parkingDetector_t13",
+	parkingDetector_internal__."parkingDetector_t14",
+	parkingDetector_internal__."parkingDetector_t1",
+	parkingDetector_internal__."parkingDetector_t8",
+	parkingDetector_movement_out__."parkingDetector_t11",
+	parkingDetector_internal__."parkingDetector_t7",
+	parkingDetector_internal__."parkingDetector_t6",
+	parkingDetector_movement_in__."parkingDetector_t2",
+	parkingDetector_movement_in__."parkingDetector_t3",
+	parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_internal__."parkingDetector_t18"
 |}
-S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = let
-	T_parkingDetector_t7(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_internal__!"parkingDetector_t7" ->  parkingDetector_exit!"parkingDetector_left_active"!"parkingDetector_left_active" -> SKIP;
+S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = let
+	T_parkingDetector_t7(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_internal__!"parkingDetector_t7" ->  parkingDetector_exit!"parkingDetector_left_active"!"parkingDetector_left_active" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_left_active"!"parkingDetector_left_active" -> SKIP;
-						J_parkingDetector_p1(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						J_parkingDetector_p1(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	
-	J_parkingDetector_p1(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = (
+	J_parkingDetector_p1(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (
 				(parkingDetector_internal__!"parkingDetector_t8" -> parkingDetector_enter!"parkingDetector_left_active"!"parkingDetector_init" -> parkingDetector_entered!"parkingDetector_left_active"!"parkingDetector_init" ->
-				S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+				S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 				)|~|
 				(parkingDetector_internal__!"parkingDetector_t9" -> SKIP;parkingDetector_enter!"parkingDetector_left_active"!"parkingDetector_left_idle" -> parkingDetector_entered!"parkingDetector_left_active"!"parkingDetector_left_idle" ->
-				S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+				S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 				)
 				)
 	
 	
 
-	S_parkingDetector_left_active_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time) = 
+	S_parkingDetector_left_active_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle) = 
 	SKIP; 
 	parkingDetector_entered!o__!"parkingDetector_left_active" ->
 	   (SKIP
 	   														; STOP /\ (
-	   															    T_parkingDetector_t7(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															    T_parkingDetector_t7(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    []
-	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t12","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t7","parkingDetector_t13","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"}) ->
+	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"}) ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_left_active"})!"parkingDetector_left_active" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_left_active" -> SKIP);
-	   															      	S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t12","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t7","parkingDetector_t13","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_left_active"})!"parkingDetector_left_active" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_left_active" -> SKIP);
-	   															      	S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t12","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t7","parkingDetector_t13","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_left_active"})!"parkingDetector_left_active" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_left_active" -> SKIP);
-	   															      	S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															      	S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    )
 	   														)
 within
 parkingDetector_enter?x__:diff(parkingDetector_SIDS,{"parkingDetector_left_active"})!"parkingDetector_left_active" -> ( 
-	S_parkingDetector_left_active_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time)) 
+	S_parkingDetector_left_active_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)) 
 CS_parkingDetector_right_active_sync = {|
 	parkingDetector_enter.y.x, 
 	parkingDetector_entered.y.x, 
@@ -313,65 +341,69 @@ CS_parkingDetector_right_active_sync = {|
 
 
 parkingDetector_right_active_triggers = {|
-	parkingDetector_internal__."parkingDetector_t12",
 	parkingDetector_internal__."parkingDetector_t9",
-	parkingDetector_internal__."parkingDetector_t14",
-	parkingDetector_movement_out__."parkingDetector_t11",
-	parkingDetector_internal__."parkingDetector_t17",
-	parkingDetector_internal__."parkingDetector_t6",
-	parkingDetector_movement_in__."parkingDetector_t3",
-	parkingDetector_movement_in__."parkingDetector_t2",
-	parkingDetector_internal__."parkingDetector_t13",
-	parkingDetector_internal__."parkingDetector_t7",
-	parkingDetector_movement_out__."parkingDetector_t15",
-	parkingDetector_internal__."parkingDetector_t16",
 	parkingDetector_internal__."parkingDetector_t4",
+	parkingDetector_internal__."parkingDetector_t16",
+	parkingDetector_internal__."parkingDetector_t12",
 	parkingDetector_internal__."parkingDetector_t5",
-	parkingDetector_internal__."parkingDetector_t8"
+	parkingDetector_internal__."parkingDetector_t19",
+	parkingDetector_movement_out__."parkingDetector_t15",
+	parkingDetector_internal__."parkingDetector_t10",
+	parkingDetector_internal__."parkingDetector_t13",
+	parkingDetector_internal__."parkingDetector_t14",
+	parkingDetector_internal__."parkingDetector_t1",
+	parkingDetector_internal__."parkingDetector_t8",
+	parkingDetector_movement_out__."parkingDetector_t11",
+	parkingDetector_internal__."parkingDetector_t7",
+	parkingDetector_internal__."parkingDetector_t6",
+	parkingDetector_movement_in__."parkingDetector_t2",
+	parkingDetector_movement_in__."parkingDetector_t3",
+	parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_internal__."parkingDetector_t18"
 |}
-S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = let
-	T_parkingDetector_t12(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_internal__!"parkingDetector_t12" ->  parkingDetector_exit!"parkingDetector_right_active"!"parkingDetector_right_active" -> SKIP;
+S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = let
+	T_parkingDetector_t12(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_internal__!"parkingDetector_t12" ->  parkingDetector_exit!"parkingDetector_right_active"!"parkingDetector_right_active" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_right_active"!"parkingDetector_right_active" -> SKIP;
-						J_parkingDetector_p2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						J_parkingDetector_p2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	
-	J_parkingDetector_p2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = (
+	J_parkingDetector_p2(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (
 				(parkingDetector_internal__!"parkingDetector_t13" -> parkingDetector_enter!"parkingDetector_right_active"!"parkingDetector_init" -> parkingDetector_entered!"parkingDetector_right_active"!"parkingDetector_init" ->
-				S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+				S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 				)|~|
 				(parkingDetector_internal__!"parkingDetector_t14" -> SKIP;parkingDetector_enter!"parkingDetector_right_active"!"parkingDetector_right_idle" -> parkingDetector_entered!"parkingDetector_right_active"!"parkingDetector_right_idle" ->
-				S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+				S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 				)
 				)
 	
 	
 
-	S_parkingDetector_right_active_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time) = 
+	S_parkingDetector_right_active_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle) = 
 	SKIP; 
 	parkingDetector_entered!o__!"parkingDetector_right_active" ->
 	   (SKIP
 	   														; STOP /\ (
-	   															    T_parkingDetector_t12(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															    T_parkingDetector_t12(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    []
-	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"}) ->
+	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"}) ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_right_active"})!"parkingDetector_right_active" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_right_active" -> SKIP);
-	   															      	S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_right_active"})!"parkingDetector_right_active" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_right_active" -> SKIP);
-	   															      	S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_right_active"})!"parkingDetector_right_active" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_right_active" -> SKIP);
-	   															      	S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															      	S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    )
 	   														)
 within
 parkingDetector_enter?x__:diff(parkingDetector_SIDS,{"parkingDetector_right_active"})!"parkingDetector_right_active" -> ( 
-	S_parkingDetector_right_active_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time)) 
+	S_parkingDetector_right_active_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)) 
 CS_parkingDetector_init_sync = {|
 	parkingDetector_enter.y.x, 
 	parkingDetector_entered.y.x, 
@@ -388,70 +420,74 @@ CS_parkingDetector_init_sync = {|
 
 
 parkingDetector_init_triggers = {|
-	parkingDetector_internal__."parkingDetector_t12",
 	parkingDetector_internal__."parkingDetector_t9",
-	parkingDetector_internal__."parkingDetector_t14",
-	parkingDetector_movement_out__."parkingDetector_t11",
-	parkingDetector_internal__."parkingDetector_t17",
-	parkingDetector_internal__."parkingDetector_t6",
-	parkingDetector_movement_in__."parkingDetector_t3",
-	parkingDetector_movement_in__."parkingDetector_t2",
-	parkingDetector_internal__."parkingDetector_t13",
-	parkingDetector_internal__."parkingDetector_t7",
-	parkingDetector_movement_out__."parkingDetector_t15",
-	parkingDetector_internal__."parkingDetector_t16",
 	parkingDetector_internal__."parkingDetector_t4",
+	parkingDetector_internal__."parkingDetector_t16",
+	parkingDetector_internal__."parkingDetector_t12",
 	parkingDetector_internal__."parkingDetector_t5",
-	parkingDetector_internal__."parkingDetector_t8"
+	parkingDetector_internal__."parkingDetector_t19",
+	parkingDetector_movement_out__."parkingDetector_t15",
+	parkingDetector_internal__."parkingDetector_t10",
+	parkingDetector_internal__."parkingDetector_t13",
+	parkingDetector_internal__."parkingDetector_t14",
+	parkingDetector_internal__."parkingDetector_t1",
+	parkingDetector_internal__."parkingDetector_t8",
+	parkingDetector_movement_out__."parkingDetector_t11",
+	parkingDetector_internal__."parkingDetector_t7",
+	parkingDetector_internal__."parkingDetector_t6",
+	parkingDetector_movement_in__."parkingDetector_t2",
+	parkingDetector_movement_in__."parkingDetector_t3",
+	parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_internal__."parkingDetector_t18"
 |}
-S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = let
-	T_parkingDetector_t4(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_internal__!"parkingDetector_t4" ->  parkingDetector_exit!"parkingDetector_init"!"parkingDetector_init" -> SKIP;
+S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = let
+	T_parkingDetector_t4(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_internal__!"parkingDetector_t4" ->  parkingDetector_exit!"parkingDetector_init"!"parkingDetector_init" -> SKIP;
 						SKIP;parkingDetector_exited!"parkingDetector_init"!"parkingDetector_init" -> SKIP;
-						J_parkingDetector_p0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+						J_parkingDetector_p0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	
-	J_parkingDetector_p0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = (
+	J_parkingDetector_p0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (
 				(parkingDetector_internal__!"parkingDetector_t6" -> ( true&(updateCall -> (SKIP |~| STOP); updateRet -> SKIP));( true&(rotateCall -> (SKIP |~| STOP); rotateRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_init"!"parkingDetector_right_idle" -> parkingDetector_entered!"parkingDetector_init"!"parkingDetector_right_idle" ->
-				S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+				S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 				)|~|
 				(parkingDetector_internal__!"parkingDetector_t5" -> ( true&(updateCall -> (SKIP |~| STOP); updateRet -> SKIP));( true&(rotateCall -> (SKIP |~| STOP); rotateRet -> SKIP));SKIP;parkingDetector_enter!"parkingDetector_init"!"parkingDetector_left_idle" -> parkingDetector_entered!"parkingDetector_init"!"parkingDetector_left_idle" ->
-				S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+				S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 				)
 				)
 	
 	
 
-	S_parkingDetector_init_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time) = 
+	S_parkingDetector_init_execute(id__,o__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle) = 
 	SKIP; 
 	parkingDetector_entered!o__!"parkingDetector_init" ->
 	   (SKIP
 	   														; STOP /\ (
-	   															    T_parkingDetector_t4(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															    T_parkingDetector_t4(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    []
-	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"}) ->
+	   															    parkingDetector_internal__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"}) ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_init"})!"parkingDetector_init" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_init" -> SKIP);
-	   															      	S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_in__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_init"})!"parkingDetector_init" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_init" -> SKIP);
-	   															      	S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t12","parkingDetector_t9","parkingDetector_t14","parkingDetector_t11","parkingDetector_t17","parkingDetector_t6","parkingDetector_t3","parkingDetector_t2","parkingDetector_t13","parkingDetector_t7","parkingDetector_t15","parkingDetector_t16","parkingDetector_t4","parkingDetector_t5","parkingDetector_t8"})?d__ ->
+	   															      	S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	   															    [] parkingDetector_movement_out__?x:diff(parkingDetector_TIDS,{"__NULLTRANSITION__","parkingDetector_t9","parkingDetector_t4","parkingDetector_t16","parkingDetector_t12","parkingDetector_t5","parkingDetector_t19","parkingDetector_t15","parkingDetector_t10","parkingDetector_t13","parkingDetector_t14","parkingDetector_t1","parkingDetector_t8","parkingDetector_t11","parkingDetector_t7","parkingDetector_t6","parkingDetector_t2","parkingDetector_t3","parkingDetector_t17","parkingDetector_t18"})?d__ ->
 	   															      parkingDetector_exit?y:diff(parkingDetector_SIDS,{"parkingDetector_init"})!"parkingDetector_init" -> (
 	   															      	SKIP;
 	   															      	parkingDetector_exited!y!"parkingDetector_init" -> SKIP);
-	   															      	S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	   															      	S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	   															    )
 	   														)
 within
 parkingDetector_enter?x__:diff(parkingDetector_SIDS,{"parkingDetector_init"})!"parkingDetector_init" -> ( 
-	S_parkingDetector_init_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time)) 
+	S_parkingDetector_init_execute(id__,x__,parkingDetector_Pactive,parkingDetector_idle_time,parkingDetector_watch_time,parkingDetector_Pidle)) 
 
-I_parkingDetector_i0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = let
-				T_parkingDetector_t0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)	= parkingDetector_internal__!"parkingDetector_t0" -> parkingDetector_enter!"parkingDetector"!"parkingDetector_init" -> parkingDetector_entered!"parkingDetector"!"parkingDetector_init" ->
+I_parkingDetector_i0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = let
+				T_parkingDetector_t0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)	= parkingDetector_internal__!"parkingDetector_t0" -> parkingDetector_enter!"parkingDetector"!"parkingDetector_init" -> parkingDetector_entered!"parkingDetector"!"parkingDetector_init" ->
 				SKIP
-			within T_parkingDetector_t0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+			within T_parkingDetector_t0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 
 parkingDetector_int_int = {|
 	parkingDetector_movement_in__."parkingDetector_t0",
@@ -496,37 +532,49 @@ parkingDetector_internal__."parkingDetector_t14",
 	parkingDetector_movement_in__."parkingDetector_t15",
 	parkingDetector_movement_out__."parkingDetector_t15",
 parkingDetector_internal__."parkingDetector_t15",
+	parkingDetector_movement_in__."parkingDetector_t1",
+	parkingDetector_movement_out__."parkingDetector_t1",
+parkingDetector_internal__."parkingDetector_t1",
+	parkingDetector_movement_in__."parkingDetector_t10",
+	parkingDetector_movement_out__."parkingDetector_t10",
+parkingDetector_internal__."parkingDetector_t10",
 	parkingDetector_movement_in__."parkingDetector_t16",
 	parkingDetector_movement_out__."parkingDetector_t16",
 parkingDetector_internal__."parkingDetector_t16",
 	parkingDetector_movement_in__."parkingDetector_t17",
 	parkingDetector_movement_out__."parkingDetector_t17",
-parkingDetector_internal__."parkingDetector_t17"
+parkingDetector_internal__."parkingDetector_t17",
+	parkingDetector_movement_in__."parkingDetector_t18",
+	parkingDetector_movement_out__."parkingDetector_t18",
+parkingDetector_internal__."parkingDetector_t18",
+	parkingDetector_movement_in__."parkingDetector_t19",
+	parkingDetector_movement_out__."parkingDetector_t19",
+parkingDetector_internal__."parkingDetector_t19"
 |}
 
 parkingDetector_internal_events = {|parkingDetector_enter,parkingDetector_entered,
 			 				  parkingDetector_exit,parkingDetector_exited|}
-S_parkingDetector_left_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+S_parkingDetector_left_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = S_parkingDetector_left_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
  		[|diff(parkingDetector_int_int,parkingDetector_left_idle_triggers)|]
  		SKIP
  		
-S_parkingDetector_right_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+S_parkingDetector_right_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = S_parkingDetector_right_idle(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
  		[|diff(parkingDetector_int_int,parkingDetector_right_idle_triggers)|]
  		SKIP
  		
-S_parkingDetector_left_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+S_parkingDetector_left_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = S_parkingDetector_left_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
  		[|diff(parkingDetector_int_int,parkingDetector_left_active_triggers)|]
  		SKIP
  		
-S_parkingDetector_right_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+S_parkingDetector_right_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = S_parkingDetector_right_active(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
  		[|diff(parkingDetector_int_int,parkingDetector_right_active_triggers)|]
  		SKIP
  		
-S_parkingDetector_init_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+S_parkingDetector_init_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = S_parkingDetector_init(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
  		[|diff(parkingDetector_int_int,parkingDetector_init_triggers)|]
  		SKIP
  		
-STM_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = (I_parkingDetector_i0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+STM_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (I_parkingDetector_i0(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 [|{|parkingDetector_enter.x.y,
 		parkingDetector_entered.x.y,
 		parkingDetector_exit.x.y,
@@ -534,52 +582,60 @@ STM_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, pa
 		x <- diff(parkingDetector_SIDS,{"parkingDetector_left_idle","parkingDetector_right_idle","parkingDetector_left_active","parkingDetector_right_active","parkingDetector_init"}),
 		y <- {"parkingDetector_left_idle","parkingDetector_right_idle","parkingDetector_left_active","parkingDetector_right_active","parkingDetector_init"}
 |}|]
-(S_parkingDetector_left_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+(S_parkingDetector_left_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
   [|inter(CS_parkingDetector_left_idle_sync,union(union(union(CS_parkingDetector_right_idle_sync,CS_parkingDetector_left_active_sync),CS_parkingDetector_right_active_sync),CS_parkingDetector_init_sync))|]
- (S_parkingDetector_right_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+ (S_parkingDetector_right_idle_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
    [|inter(CS_parkingDetector_right_idle_sync,union(union(CS_parkingDetector_left_active_sync,CS_parkingDetector_right_active_sync),CS_parkingDetector_init_sync))|]
-  (S_parkingDetector_left_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+  (S_parkingDetector_left_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
     [|inter(CS_parkingDetector_left_active_sync,union(CS_parkingDetector_right_active_sync,CS_parkingDetector_init_sync))|]
-   (S_parkingDetector_right_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+   (S_parkingDetector_right_active_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
      [|inter(CS_parkingDetector_right_active_sync,CS_parkingDetector_init_sync)|]
-    S_parkingDetector_init_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+    S_parkingDetector_init_R(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
    )
   )
  )
  	)
 -- optimized memory process
 
-MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = ((parkingDetector_internal__!"parkingDetector_t0" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = ((parkingDetector_internal__!"parkingDetector_t0" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_internal__!"parkingDetector_t4" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t4" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_internal__!"parkingDetector_t6" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t6" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_internal__!"parkingDetector_t5" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t5" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_movement_in__!"parkingDetector_t2".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_movement_in__!"parkingDetector_t2".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_movement_in__!"parkingDetector_t3".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_movement_in__!"parkingDetector_t3".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-(true)&(parkingDetector_internal__!"parkingDetector_t7" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+(true)&(parkingDetector_internal__!"parkingDetector_t7" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
 []
-parkingDetector_internal__!"parkingDetector_t8" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t8" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_internal__!"parkingDetector_t9" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t9" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_movement_out__!"parkingDetector_t11".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_movement_out__!"parkingDetector_t11".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-(true)&(parkingDetector_internal__!"parkingDetector_t12" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+(true)&(parkingDetector_internal__!"parkingDetector_t12" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
 []
-parkingDetector_internal__!"parkingDetector_t13" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t13" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_internal__!"parkingDetector_t14" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_internal__!"parkingDetector_t14" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-parkingDetector_movement_out__!"parkingDetector_t15".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_movement_out__!"parkingDetector_t15".in -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 []
-(true)&(parkingDetector_internal__!"parkingDetector_t16" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+(true)&(parkingDetector_internal__!"parkingDetector_t1" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
 []
-(true)&(parkingDetector_internal__!"parkingDetector_t17" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))))
+parkingDetector_internal__!"parkingDetector_t10" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+[]
+parkingDetector_internal__!"parkingDetector_t16" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+[]
+(true)&(parkingDetector_internal__!"parkingDetector_t17" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
+[]
+parkingDetector_internal__!"parkingDetector_t18" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+[]
+parkingDetector_internal__!"parkingDetector_t19" -> MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)))
 
 
 MemoryVariablesProcesses_parkingDetector = {}
@@ -588,43 +644,51 @@ MemoryVariables_parkingDetector = ||| (P, alpha) : MemoryVariablesProcesses_park
 MemoryVariablesSyncSet_parkingDetector = {||}
 MemoryVariablesHideSet_parkingDetector = {||}
 
-MemoryN_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = sbisim(diamond((sbisim(diamond(MemoryVariables_parkingDetector)) [| MemoryVariablesSyncSet_parkingDetector |] sbisim(diamond(MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)))) \ MemoryVariablesHideSet_parkingDetector))
+MemoryN_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = sbisim(diamond((sbisim(diamond(MemoryVariables_parkingDetector)) [| MemoryVariablesSyncSet_parkingDetector |] sbisim(diamond(MemoryTransitions_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)))) \ MemoryVariablesHideSet_parkingDetector))
 -- unoptimized memory
-Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = (
-	parkingDetector_internal__!"parkingDetector_t0" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = (
+	parkingDetector_internal__!"parkingDetector_t0" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_internal__!"parkingDetector_t4" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t4" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_internal__!"parkingDetector_t6" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t6" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_internal__!"parkingDetector_t5" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t5" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_movement_in__!"parkingDetector_t2".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_movement_in__!"parkingDetector_t2".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_movement_in__!"parkingDetector_t3".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_movement_in__!"parkingDetector_t3".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	(true)&(parkingDetector_internal__!"parkingDetector_t7" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+	(true)&(parkingDetector_internal__!"parkingDetector_t7" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
 	  []
-	parkingDetector_internal__!"parkingDetector_t8" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t8" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_internal__!"parkingDetector_t9" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t9" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_movement_out__!"parkingDetector_t11".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_movement_out__!"parkingDetector_t11".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	(true)&(parkingDetector_internal__!"parkingDetector_t12" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+	(true)&(parkingDetector_internal__!"parkingDetector_t12" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
 	  []
-	parkingDetector_internal__!"parkingDetector_t13" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t13" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_internal__!"parkingDetector_t14" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_internal__!"parkingDetector_t14" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	parkingDetector_movement_out__!"parkingDetector_t15".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+	parkingDetector_movement_out__!"parkingDetector_t15".in -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	  []
-	(true)&(parkingDetector_internal__!"parkingDetector_t16" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+	(true)&(parkingDetector_internal__!"parkingDetector_t1" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
 	  []
-	(true)&(parkingDetector_internal__!"parkingDetector_t17" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
+	parkingDetector_internal__!"parkingDetector_t10" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	  []
+	parkingDetector_internal__!"parkingDetector_t16" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	  []
+	(true)&(parkingDetector_internal__!"parkingDetector_t17" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
+	  []
+	parkingDetector_internal__!"parkingDetector_t18" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+	  []
+	parkingDetector_internal__!"parkingDetector_t19" -> Memory_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	)
 -- main process
-parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = ((STM_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = ((STM_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
 	[|union(
 		{||},
 		{|parkingDetector_internal__."parkingDetector_t0",
@@ -641,18 +705,22 @@ parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, pa
 		parkingDetector_internal__."parkingDetector_t13",
 		parkingDetector_internal__."parkingDetector_t14",
 		parkingDetector_movement_out__."parkingDetector_t15",
+		parkingDetector_internal__."parkingDetector_t1",
+		parkingDetector_internal__."parkingDetector_t10",
 		parkingDetector_internal__."parkingDetector_t16",
-		parkingDetector_internal__."parkingDetector_t17"|}
+		parkingDetector_internal__."parkingDetector_t17",
+		parkingDetector_internal__."parkingDetector_t18",
+		parkingDetector_internal__."parkingDetector_t19"|}
 	)|]
-	sbisim(diamond(MemoryN_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)))
-	--sbisim(diamond(MemoryN_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)))
+	sbisim(diamond(MemoryN_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)))
+	--sbisim(diamond(MemoryN_parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)))
 )[[parkingDetector_movement_in__.x <- parkingDetector_movement_in, parkingDetector_movement_out__.x <- parkingDetector_movement_out| x<-parkingDetector_TIDS]]
 \union({||},
 {||}))
 [|{|parkingDetector_terminate|}|>SKIP\{|parkingDetector_internal__|}
 
-parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) \ parkingDetector_internal_events
-parkingDetector_FVS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
-parkingDetector_VS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = ShowV_parkingDetector(parkingDetector_FVS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time))
-parkingDetector_O(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = sbisim(diamond(parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)))
-parkingDetector_VS_O(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time) = sbisim(diamond(parkingDetector_VS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)))
+parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) \ parkingDetector_internal_events
+parkingDetector_FVS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = parkingDetector_aux(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)
+parkingDetector_VS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = ShowV_parkingDetector(parkingDetector_FVS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle))
+parkingDetector_O(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = sbisim(diamond(parkingDetector(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)))
+parkingDetector_VS_O(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle) = sbisim(diamond(parkingDetector_VS(id__, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time, parkingDetector_Pidle)))
