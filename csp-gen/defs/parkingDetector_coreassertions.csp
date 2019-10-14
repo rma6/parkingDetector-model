@@ -1,0 +1,11 @@
+-- generate parkingDetector
+P_parkingDetector = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within parkingDetector_O(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+assert P_parkingDetector :[deadlock-free]	
+assert P_parkingDetector;RUN({r__}) :[deadlock-free]
+assert P_parkingDetector :[deterministic]
+assert P_parkingDetector :[divergence-free]
+

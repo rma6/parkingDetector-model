@@ -1,0 +1,54 @@
+-- *************************************************************************
+-- Copyright (c) 2019 University of York and others
+--
+-- This program and the accompanying materials are made available under the
+-- terms of the Eclipse Public License 2.0 which is available at
+-- http://www.eclipse.org/legal/epl-2.0.
+--
+-- SPDX-License-Identifier: EPL-2.0
+--
+-- Contributors:
+--   Alvaro Miyazawa - initial definition
+-- *************************************************************************
+
+first((a,b)) = a
+second((a,b)) = b
+maplet(a,b) = (a,b)
+dom(r) = {first(p) | p <- r}
+ran(r) = {second(p) | p <- r}
+relcomp(r,s) = {(first(a),second(b)) | a <- r, b <- s, second(a) == first(b) }
+funcomp(s,r) = relcomp(r,s)
+dres(a,r) = {p | p <- r, member(first(p), a)}
+rres(r,b) = {p | p <- r, member(second(p), b)}
+dsub(a,r) = {p | p <- r, not member(first(p), a)}
+rsub(r,b) = {p | p <- r, not member(second(p), b)}
+rinv(r) = {(second(p),first(p)) | p <- r}
+rimage(r,a) = {second(p) | p <- r, member(first(p),a)}
+override(r,s) = union(dsub(dom(s),r),s)
+
+aux_tr_closure(r,tr) = let aux = relcomp(tr,r) within if aux == tr then aux else aux_tr_closure(r,aux) 
+tr_closure(r) = aux_tr_closure(r,r)
+
+-- I have not yet implemented id and refl_tr_closure because it requires information about the base types.
+-- This information is available to the generator, but it would require these functions to be treated differently.
+-- Alternatively, I can change the definition of id and refl_tr_closure (in robochart) to take an extra parameter
+-- corresponding to the base type.
+
+pre_first(p) = true
+pre_second(p) = true
+pre_maplet(x, y) = true
+pre_dom(r) = true
+pre_ran(r) = true
+pre_id() = true
+pre_relcomp(r, s) = true
+pre_funcomp(s, r) = true
+pre_dres(a,r) = true
+pre_rres(r, b) = true
+pre_dsub(a,r) = true
+pre_rsub(r, b) = true
+pre_rinv(r) = true
+pre_rimage(r, a) = true
+pre_override(r, s) = true
+pre_tr_closure(r) = true
+pre_refl_tr_closure(r) = true
+

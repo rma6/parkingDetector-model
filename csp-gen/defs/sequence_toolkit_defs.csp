@@ -1,0 +1,104 @@
+-- *************************************************************************
+-- Copyright (c) 2019 University of York and others
+--
+-- This program and the accompanying materials are made available under the
+-- terms of the Eclipse Public License 2.0 which is available at
+-- http://www.eclipse.org/legal/epl-2.0.
+--
+-- SPDX-License-Identifier: EPL-2.0
+--
+-- Contributors:
+--   Alvaro Miyazawa - initial definition
+-- *************************************************************************
+
+-- The pre_isInjectiveSequence is not implemented because it depends on a carrier set 
+
+-- include "set_toolkit.csp"
+-- include "relation_toolkit.csp"
+
+range(x,y) = <x..y>
+
+iter(n,r) = if n == 1 then r
+            else relcomp(r,iter(n-1,r))
+
+isMin(x,s) = member(x,s) and card({a | a<-s, a < x}) == 0
+isMax(x,s) = member(x,s) and card({a | a<-s, a > x}) == 0 
+
+hasMin(a) = card({x|x<-a,isMin(x,a)}) == 1
+hasMax(a) = card({x|x<-a,isMax(x,a)}) == 1
+
+the({a}) = a
+
+min(a) = the({x|x<-a,isMin(x,a)})
+max(a) = the({x|x<-a,isMax(x,a)})
+
+isNonEmpty(s) = length(s) > 0
+
+concat(s,t) = s^t
+
+reverse(<>) = <>
+reverse(<x>^xs) = reverse(xs)^<x>
+
+last(xs^<x>) = x
+
+front(xs^<x>) = xs
+
+seq2rel(xs) = let
+	aux_seq2rel(<x>^xs,n) = union({(n,x)},aux_seq2rel(xs,n+1))
+	aux_seq2rel(<>,_) = {}
+within
+	aux_seq2rel(xs,1)
+
+get(f,i) = the({second(x)|x<-f,first(x) == i})
+
+aux_squash({},_) = <>
+aux_squash(f,i) = let a = {p | p <- f, first(p) == i}
+within
+	if card(a) == 1 then <second(the(a))>^aux_squash(diff(f,a),i+1)
+	else aux_squash(f,i+1)
+
+squash(f) = aux_squash(f,1)
+
+extract(a,s) = let r = seq2rel(s) within 
+	<get(r,i) | i <- range(1,length(s)), member(i,a)>
+
+filter(s,a) = <x | x <- s, member(x,a)>
+
+prefix(<>,ys) = true
+prefix(<x>^xs,<>) = false
+prefix(<x>^xs,<y>^ys) = if x == y then prefix(xs,ys) else false
+
+suffix(<>,ys) = true
+suffix(xs^<x>,<>) = false
+suffix(xs^<x>,ys^<y>) = if x == y then suffix(xs,ys) else false
+
+infix(<x>^xs,<y>^ys) = if x == y then infix(xs,ys) else infix(<x>^xs, ys)
+infix(<x>^xs, <>) = false
+infix(<>, <y>^ys) = true
+
+dconcat(<>) = <>
+dconcat(<x>) = x
+dconcat(<x>^<y>^xs) = dconcat(<x^y>^xs)
+
+pre_range(x, y) = true
+pre_iter(n, r) = true
+pre_size(a)= isFinite(a)
+pre_hasMin(a) = true
+pre_hasMax(a) = true
+pre_min(a) = hasMin(a) 
+pre_max(a) = hasMax(a)
+pre_isNonEmpty(s) = true
+pre_isInjectiveSequence(s) = true
+pre_concat(s, t) = true
+pre_reverse(s) = true
+pre_head(s) = isNonEmpty(s)
+pre_last(s) = isNonEmpty(s)
+pre_tail(s) = true
+pre_front(s) = true
+pre_squash(f) = isFiniteFunction(f)
+pre_extract(a, s) = true
+pre_filter(s, a) = true
+pre_prefix(s, t) = true
+pre_suffix(s, t) = true
+pre_infix(s, t) = true
+pre_dconcat(s) = true

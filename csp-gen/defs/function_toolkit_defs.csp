@@ -1,0 +1,39 @@
+-- *************************************************************************
+-- Copyright (c) 2019 University of York and others
+--
+-- This program and the accompanying materials are made available under the
+-- terms of the Eclipse Public License 2.0 which is available at
+-- http://www.eclipse.org/legal/epl-2.0.
+--
+-- SPDX-License-Identifier: EPL-2.0
+--
+-- Contributors:
+--   Alvaro Miyazawa - initial definition
+-- *************************************************************************
+
+-- the functions isTotal, isInjection, isTotalInjection, isSurjection, isTotalSurjection,
+-- isBijections and isFiniteInjection are not yet implemented because they need information
+-- about carrier sets.
+
+-- sets in our encoding in CSPM are always finite
+
+-- include "relation_toolkit.csp"
+isFinite(s) = true
+
+isFiniteFunction(f) = isFinite(f)
+
+disjoint(f) = Union({inter(second(p),second(q)) | p <- f, q <-f , p != q}) == {}
+
+partitions(f,a) = disjoint(f) and Union(ran(f)) == a
+
+pre_isTotal(f) = true
+pre_isInjection(f) = true
+pre_isTotalInjection(f) = true
+pre_isSurjection(f) = true
+pre_isTotalSurjection(f) = true
+pre_isBijection(f) = true
+pre_isFinite(s) = true
+pre_isFiniteFunction(f) = true
+pre_isFiniteInjection(f) = true
+pre_disjoint(f) = true
+pre_partitions(f, a) = true

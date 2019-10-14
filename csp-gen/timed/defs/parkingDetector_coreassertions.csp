@@ -1,0 +1,75 @@
+ExternalEvents_parkingDetector = {|rotateRet,updateCall,decreaseSlotRet,updateRet,increaseSlotRet,increaseSlotCall,parkingDetector_movement_in,parkingDetector_movement_out,decreaseSlotCall,rotateCall|}
+
+P_T_parkingDetector = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within T_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+P_parkingDetector = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+P_T_parkingDetector_VS = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within T_parkingDetector_VS(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+P_parkingDetector_VS = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within parkingDetector_VS(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+
+assert P_T_parkingDetector :[deterministic]
+assert P_T_parkingDetector :[divergence-free]
+assert P_T_parkingDetector ; RUN({tock}) :[deadlock-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_parkingDetector)      [F= prioritise((P_T_parkingDetector ; RUN({tock})) |\ union(ExternalEvents_parkingDetector,{tock}),<{},{tock}>)
+
+-- zeno freedom
+assert P_T_parkingDetector |\ union(ExternalEvents_parkingDetector,{tock})  :[divergence-free]
+
+-- every state is reachable
+
+assert not STOP [T= ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV|}
+assert not STOP [T= ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV|}
+assert not STOP [T= ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV|}
+assert not STOP [T= ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV|}
+assert not STOP [T= ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV|}
+
+-- states can be reached infinitely often
+assert ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV."parkingDetector_left_idle"|} [T= RUN({|parkingDetector_enteredV."parkingDetector_left_idle"|})
+assert ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV."parkingDetector_right_idle"|} [T= RUN({|parkingDetector_enteredV."parkingDetector_right_idle"|})
+assert ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV."parkingDetector_left_active"|} [T= RUN({|parkingDetector_enteredV."parkingDetector_left_active"|})
+assert ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV."parkingDetector_right_active"|} [T= RUN({|parkingDetector_enteredV."parkingDetector_right_active"|})
+assert ShowEnteredV_parkingDetector(P_T_parkingDetector_VS) |\ {|parkingDetector_enteredV."parkingDetector_init"|} [T= RUN({|parkingDetector_enteredV."parkingDetector_init"|})
+
+-- timed model is a refinement
+assert sbisim(diamond(P_T_parkingDetector)) [F= P_T_parkingDetector \ {tock}
+assert sbisim(diamond(P_T_parkingDetector_VS)) [T= P_T_parkingDetector_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert P_T_parkingDetector \ {tock} [T= sbisim(diamond(P_parkingDetector))
+assert P_T_parkingDetector_VS \ {tock} [T= sbisim(diamond(P_parkingDetector_VS))
+
+-- memory models consistency check
+T_MemoryN_parkingDetector = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within timed::MemoryN_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+T_MemoryO_parkingDetector = let 
+			parkingDetector_Pactive = 0
+			parkingDetector_idle_time = 0
+			parkingDetector_watch_time = 0
+		within timed::MemoryO_parkingDetector(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)
+
+assert T_MemoryN_parkingDetector [FD= T_MemoryO_parkingDetector
+assert T_MemoryO_parkingDetector [FD= T_MemoryN_parkingDetector
+
+-- clocks used after reset
+parkingDetector_clock_C_trans = {|parkingDetector_internal__."parkingDetector_t7",parkingDetector_internal__."parkingDetector_t12",parkingDetector_internal__."parkingDetector_t16",parkingDetector_internal__."parkingDetector_t17"|}
+parkingDetector_clock_C = CHAOS(diff(Events,parkingDetector_clock_C_trans)) [| {| timed::parkingDetector_clockReset."C" |} |> CHAOS(Events) 
+assert parkingDetector_clock_C [T= timed::parkingDetector_internal_(0, parkingDetector_Pactive, parkingDetector_idle_time, parkingDetector_watch_time)

@@ -1,0 +1,4 @@
+-- generate includes
+include "defs/parkingDetector_coreassertions.csp"
+include "parkingDetector.csp"
+

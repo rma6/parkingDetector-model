@@ -1,0 +1,132 @@
+interface events {
+	event movement_in
+	event movement_out
+}
+
+interface internals {
+	rotate ( )
+update ( )
+	increaseSlot ( )
+	decreaseSlot ( )
+}
+
+stm parkingDetector {
+	uses events requires internals 
+	
+	const Pactive : real
+	initial i0
+	state left_idle {
+	}
+	state right_idle {
+	}
+	state left_active {
+	}
+	state right_active {
+	}
+	state init {
+	}
+
+	probabilistic p0
+
+	probabilistic p1
+
+	probabilistic p2
+
+	transition t0 {
+		from i0
+		to init
+	}
+	transition t4 {
+		from init
+		to p0
+	}
+	transition t6 {
+		from p0
+		to right_idle
+		probability 0.5
+		action update ( ) ; rotate ( ) ; # C
+	}
+	transition t5 {
+		from p0
+		to left_idle
+		probability 0.5
+		action update ( ) ; rotate ( ) ; # C
+	}
+	transition t2 {
+		from left_idle
+		to left_active
+		trigger movement_in
+		action decreaseSlot ( ) ; # C
+	}
+	transition t3 {
+		from right_idle
+		to right_active
+		trigger movement_in
+		action decreaseSlot ( ) ; # C
+	}
+	transition t7 {
+		from left_active
+		to p1
+		trigger
+		condition since ( C ) >= idle_time
+	}
+	transition t8 {
+		from p1
+		to init
+		probability 1 - Pactive
+	}
+	transition t9 {
+		from p1
+		to left_idle
+		probability Pactive
+		action # C
+	}
+	transition t11 {
+		from left_idle
+		to left_active
+		trigger movement_out
+		action increaseSlot ( ) ; # C
+	}
+	transition t12 {
+		from right_active
+		to p2
+		trigger
+		condition since ( C ) >= idle_time
+	}
+	transition t13 {
+		from p2
+		to init
+		probability Pactive - 1
+	}
+	transition t14 {
+		from p2
+		to right_idle
+		probability Pactive
+		action # C
+	}
+	transition t15 {
+		from right_idle
+		to right_active
+		trigger movement_out
+		action increaseSlot ( ) ; # C
+	}
+	transition t16 {
+		from left_idle
+		to right_idle
+		trigger
+		condition since ( C ) >= watch_time
+		action rotate ( ) ; update ( ) ; # C
+	}
+	transition t17 {
+		from right_idle
+		to left_idle
+		trigger
+		condition since ( C ) >= watch_time
+		action rotate ( ) ; update ( ) ; # C
+	}
+	const idle_time : int
+	const watch_time : int
+
+	clock C
+}
+
